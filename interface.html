@@ -97,6 +97,50 @@
             cursor: grabbing;
         }
         
+        .small-sliders {
+            margin-bottom: 25px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .small-slider-track {
+            flex: 1;
+            position: relative;
+        }
+        
+        .small-slider-label {
+            font-size: 11px;
+            color: #999;
+            text-align: center;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .gauge-container {
+            width: 100%;
+            height: 20px;
+            background: #0a0a0a;
+            border: 1px solid #404040;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gauge-fill {
+            height: 100%;
+            background: linear-gradient(to right, #ff6600, #ff9900);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 153, 0, 0.5);
+        }
+        
+        .small-slider-value {
+            font-size: 14px;
+            color: #ff9900;
+            text-align: center;
+            margin-top: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        
         .slider-value {
             font-size: 28px;
             font-weight: bold;
@@ -155,6 +199,22 @@
     <div id="mode-decollage" class="mode-container">
         <div class="mode-title">DÉCOLLAGE</div>
         <div class="slider-container">
+            <div class="small-sliders">
+                <div class="small-slider-track">
+                    <div class="small-slider-label">Puissance électrique</div>
+                    <div class="gauge-container">
+                        <div class="gauge-fill" id="gauge-decollage-1" style="width: 0%;"></div>
+                    </div>
+                    <div class="small-slider-value" id="value-decollage-1">0 Cv</div>
+                </div>
+                <div class="small-slider-track">
+                    <div class="small-slider-label">Puissance thermique</div>
+                    <div class="gauge-container">
+                        <div class="gauge-fill" id="gauge-decollage-2" style="width: 0%;"></div>
+                    </div>
+                    <div class="small-slider-value" id="value-decollage-2">0 Cv</div>
+                </div>
+            </div>
             <div class="slider-limits">
                 <span class="slider-limit-value" id="min-decollage">0</span>
                 <span class="slider-limit-value" id="max-decollage">100</span>
@@ -175,6 +235,15 @@
     <div id="mode-normal" class="mode-container hidden">
         <div class="mode-title">MODE NORMAL</div>
         <div class="slider-container">
+            <div class="small-sliders" style="justify-content: center;">
+                <div class="small-slider-track" style="max-width: 50%;">
+                    <div class="small-slider-label">Puissance thermique</div>
+                    <div class="gauge-container">
+                        <div class="gauge-fill" id="gauge-normal-2" style="width: 0%;"></div>
+                    </div>
+                    <div class="small-slider-value" id="value-normal-2">0 Cv</div>
+                </div>
+            </div>
             <div class="slider-limits">
                 <span class="slider-limit-value" id="min-normal">0</span>
                 <span class="slider-limit-value" id="max-normal">100</span>
@@ -194,6 +263,22 @@
     <div id="mode-urgence" class="mode-container hidden">
         <div class="mode-title">MODE URGENCE</div>
         <div class="slider-container">
+            <div class="small-sliders">
+                <div class="small-slider-track">
+                    <div class="small-slider-label">Puissance électrique</div>
+                    <div class="gauge-container">
+                        <div class="gauge-fill" id="gauge-urgence-1" style="width: 0%;"></div>
+                    </div>
+                    <div class="small-slider-value" id="value-urgence-1">0 Cv</div>
+                </div>
+                <div class="small-slider-track">
+                    <div class="small-slider-label">Puissance thermique</div>
+                    <div class="gauge-container">
+                        <div class="gauge-fill" id="gauge-urgence-2" style="width: 0%;"></div>
+                    </div>
+                    <div class="small-slider-value" id="value-urgence-2">0 Cv</div>
+                </div>
+            </div>
             <div class="slider-limits">
                 <span class="slider-limit-value" id="min-urgence">0</span>
                 <span class="slider-limit-value" id="max-urgence">100</span>
@@ -217,17 +302,17 @@
         const CONFIG = {
             decollage: {
                 min: 0,
-                max: 100,
+                max: 3250,
                 initial: 50
             },
             normal: {
                 min: 0,
-                max: 100,
+                max: 2750,
                 initial: 50
             },
             urgence: {
                 min: 0,
-                max: 100,
+                max: 3750,
                 initial: 50
             }
         };
@@ -245,24 +330,24 @@
             sliderDecollage.min = CONFIG.decollage.min;
             sliderDecollage.max = CONFIG.decollage.max;
             sliderDecollage.value = CONFIG.decollage.initial;
-            document.getElementById('min-decollage').textContent = CONFIG.decollage.min;
-            document.getElementById('max-decollage').textContent = CONFIG.decollage.max;
+            document.getElementById('min-decollage').textContent = CONFIG.decollage.min + ' Cv';
+            document.getElementById('max-decollage').textContent = CONFIG.decollage.max + ' Cv';
             
             // Normal
             const sliderNormal = document.getElementById('slider-normal');
             sliderNormal.min = CONFIG.normal.min;
             sliderNormal.max = CONFIG.normal.max;
             sliderNormal.value = CONFIG.normal.initial;
-            document.getElementById('min-normal').textContent = CONFIG.normal.min;
-            document.getElementById('max-normal').textContent = CONFIG.normal.max;
+            document.getElementById('min-normal').textContent = CONFIG.normal.min + ' Cv';
+            document.getElementById('max-normal').textContent = CONFIG.normal.max + ' Cv';
             
             // Urgence
             const sliderUrgence = document.getElementById('slider-urgence');
             sliderUrgence.min = CONFIG.urgence.min;
             sliderUrgence.max = CONFIG.urgence.max;
             sliderUrgence.value = CONFIG.urgence.initial;
-            document.getElementById('min-urgence').textContent = CONFIG.urgence.min;
-            document.getElementById('max-urgence').textContent = CONFIG.urgence.max;
+            document.getElementById('min-urgence').textContent = CONFIG.urgence.min + ' Cv';
+            document.getElementById('max-urgence').textContent = CONFIG.urgence.max + ' Cv';
             
             // Mettre à jour les affichages
             updateValue('decollage');
@@ -274,11 +359,89 @@
         function updateValue(mode) {
             const slider = document.getElementById(`slider-${mode}`);
             const display = document.getElementById(`value-${mode}`);
-            display.textContent = slider.value;
+            display.textContent = slider.value + ' Cv';
+            
+            // Mettre à jour les deux petits sliders selon le mode
+            const totalValue = parseInt(slider.value);
+            let value1, value2;
+            
+            if (mode === 'decollage') {
+                // Décollage : électrique jusqu'à 1000, puis thermique compense
+                if (totalValue <= 1000) {
+                    value1 = totalValue; // électrique suit
+                    value2 = 0; // thermique à 0
+                } else {
+                    value1 = 1000; // électrique plafonné
+                    value2 = totalValue - 1000; // thermique compense
+                }
+            } else if (mode === 'normal') {
+                // Normal : seulement thermique (valeur2), même valeur que le total
+                value2 = totalValue;
+            } else if (mode === 'urgence') {
+                // Urgence : comme décollage (électrique jusqu'à 1000, puis thermique)
+                if (totalValue <= 1000) {
+                    value1 = totalValue; // électrique suit
+                    value2 = 0; // thermique à 0
+                } else {
+                    value1 = 1000; // électrique plafonné
+                    value2 = totalValue - 1000; // thermique compense
+                }
+            } else {
+                // Autres modes : répartition 50/50 (à modifier selon les instructions futures)
+                value1 = Math.floor(totalValue / 2);
+                value2 = totalValue - value1;
+            }
+            
+            const slider1 = document.getElementById(`slider-${mode}-1`);
+            const slider2 = document.getElementById(`slider-${mode}-2`);
+            const display1 = document.getElementById(`value-${mode}-1`);
+            const display2 = document.getElementById(`value-${mode}-2`);
+            const gauge1 = document.getElementById(`gauge-${mode}-1`);
+            const gauge2 = document.getElementById(`gauge-${mode}-2`);
+            
+            // Définir les max selon le mode
+            if (mode === 'decollage') {
+                const max1 = 1000;
+                const max2 = 2250;
+                const percent1 = (value1 / max1) * 100;
+                const percent2 = (value2 / max2) * 100;
+                gauge1.style.width = percent1 + '%';
+                gauge2.style.width = percent2 + '%';
+                display1.textContent = value1 + ' Cv';
+                display2.textContent = value2 + ' Cv';
+            } else if (mode === 'normal') {
+                // Mode normal : seulement gauge2 (thermique)
+                const max2 = parseInt(slider.max);
+                const percent2 = (value2 / max2) * 100;
+                gauge2.style.width = percent2 + '%';
+                display2.textContent = value2 + ' Cv';
+            } else if (mode === 'urgence') {
+                const max1 = 1000;
+                const max2 = 2750;
+                const percent1 = (value1 / max1) * 100;
+                const percent2 = (value2 / max2) * 100;
+                gauge1.style.width = percent1 + '%';
+                gauge2.style.width = percent2 + '%';
+                display1.textContent = value1 + ' Cv';
+                display2.textContent = value2 + ' Cv';
+            } else {
+                const max1 = parseInt(slider.max);
+                const max2 = parseInt(slider.max);
+                const percent1 = (value1 / max1) * 100;
+                const percent2 = (value2 / max2) * 100;
+                gauge1.style.width = percent1 + '%';
+                gauge2.style.width = percent2 + '%';
+                display1.textContent = value1 + ' Cv';
+                display2.textContent = value2 + ' Cv';
+            }
         }
         
         // Changer de mode
         function switchMode(newMode) {
+            // Récupérer les valeurs actuelles du mode courant
+            const currentSlider = document.getElementById(`slider-${currentMode}`);
+            const currentValue = parseInt(currentSlider.value);
+            
             // Cacher tous les modes
             document.getElementById('mode-decollage').classList.add('hidden');
             document.getElementById('mode-normal').classList.add('hidden');
@@ -286,6 +449,14 @@
             
             // Afficher le nouveau mode
             document.getElementById(`mode-${newMode}`).classList.remove('hidden');
+            
+            // Appliquer les valeurs au nouveau mode (limitées au max si nécessaire)
+            const newSlider = document.getElementById(`slider-${newMode}`);
+            const newMax = parseInt(newSlider.max);
+            const newValue = Math.min(currentValue, newMax);
+            
+            newSlider.value = newValue;
+            updateValue(newMode);
             
             currentMode = newMode;
         }
